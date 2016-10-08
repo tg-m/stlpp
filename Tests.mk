@@ -4,7 +4,8 @@ TFILTER := ""
 
 
 CPP := g++
-CXXFLAGS := -c -std=c++0x -fPIC
+CXXFLAGS := -c -fPIC
+CXXFLAGS += --std=c++11
 # CXXFLAGS += -fprofile-arcs -ftest-coverage --coverage # code coverage
 #CXXFLAGS += -O3
 #CXXFLAGS += -g
