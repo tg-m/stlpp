@@ -27,3 +27,12 @@
 *.exe
 *.out
 *.app
+
+
+# Eclipse
+.cproject
+.project
+.settings
+
+# Run
+*.run
