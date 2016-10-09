@@ -66,20 +66,29 @@ template<typename Container_t> inline typename Container_t::iterator rend(Contai
 #define call_b_e(dir, function, container)\
 std::function(STLPP_namespace::dir##begin(container), STLPP_namespace::dir##end(container))
 
+#define call_b_e_pred(dir, function, container, pred)\
+std::function(STLPP_namespace::dir##begin(container), STLPP_namespace::dir##end(container), pred)
+
 #define call_b_e_it(dir, function, container, it)\
 std::function(STLPP_namespace::dir##begin(container), STLPP_namespace::dir##end(container), it)
 
-#define call_b_e_pred(dir, function, container, func)\
-std::function(STLPP_namespace::begin(container), STLPP_namespace::end(container), pred)
+#define call_b_e_it_pred(dir, function, container, it, pred)\
+std::function(STLPP_namespace::dir##begin(container), STLPP_namespace::dir##end(container), it, pred)
 
 #define call_b_e_compare(dir, function, container, compare)\
-std::function(STLPP_namespace::begin(container), STLPP_namespace::end(container), compare)
+std::function(STLPP_namespace::dir##begin(container), STLPP_namespace::dir##end(container), compare)
 
 #define call_b_e_val(dir, function, container, val)\
-std::function(STLPP_namespace::begin(container), STLPP_namespace::end(container), val)
+std::function(STLPP_namespace::dir##begin(container), STLPP_namespace::dir##end(container), val)
 
 #define call_b_e_val_compare(dir, function, container, val, compare)\
-std::function(STLPP_namespace::begin(container), STLPP_namespace::end(container), val, compare)
+std::function(STLPP_namespace::dir##begin(container), STLPP_namespace::dir##end(container), val, compare)
+
+#define call_it_num_it(function, it_l, num, it_r)\
+std::function(it_l, num, it_r)
+
+#define call_it_num_val(function, it_l, num, val)\
+std::function(it_l, num, val)
 
 //#define GEN_b_e_general(function, dir)\
 //template<typename Container_t>\
@@ -96,9 +105,9 @@ GEN_general_b_e(     , r, function);CAR_RET;\
 GEN_general_b_e(const, r, function)
 
 #define GEN_general_b_e_pred(Const, direction, function)\
-template<typename Container_t, typename Predicate_t>\
-inline auto direction##function(Container_t Const& c, Predicate_t pred) -> decltype(call_b_e_pred(direction, function, c, pred)) {\
-    return call_b_e_pred(direction, function, c, pred);\
+template<typename Container_t, typename Predicate_t>CAR_RET;\
+inline auto direction##function(Container_t Const& c, Predicate_t pred) -> decltype(call_b_e_pred(direction, function, c, pred)) {CAR_RET;\
+    return call_b_e_pred(direction, function, c, pred);CAR_RET;\
 }
 #define GEN_b_e_pred(function)\
 GEN_general_b_e_pred(     ,  , function);CAR_RET;\
@@ -119,30 +128,73 @@ return call_b_e_val(direction, function, c, val);\
 GEN_general_b_e_val(     ,  , function);CAR_RET;\
 GEN_general_b_e_val(const,  , function);CAR_RET;\
 GEN_general_b_e_val(     , r, function);CAR_RET;\
-GEN_general_b_e_val(const, r, function)
+GEN_general_b_e_val(const, r, function);CAR_RET
 
 #define GEN_general_b_e_val_compare(Const, direction, function)\
-template<typename Container_t, typename T, typename Compare_t>\
-inline auto direction##function(Container_t Const& c, T const/*This is always const!*/& val, Compare_t compare) -> decltype(call_b_e_val_compare(direction, function, c, val, compare)) {\
-return call_b_e_val_compare(direction, function, c, val, compare);\
+template<typename Container_t, typename T, typename Compare_t>CAR_RET;\
+inline auto direction##function(Container_t Const& c, T const/*This is always const!*/& val, Compare_t compare) -> decltype(call_b_e_val_compare(direction, function, c, val, compare)) {CAR_RET;\
+return call_b_e_val_compare(direction, function, c, val, compare);CAR_RET;\
 }
 #define GEN_b_e_val_compare(function)\
 GEN_general_b_e_val_compare(     ,  , function);CAR_RET;\
 GEN_general_b_e_val_compare(const,  , function);CAR_RET;\
 GEN_general_b_e_val_compare(     , r, function);CAR_RET;\
-GEN_general_b_e_val_compare(const, r, function)
+GEN_general_b_e_val_compare(const, r, function);CAR_RET
 
 #define GEN_b_e_val_and_b_e_val_compare(function)\
 GEN_b_e_val(function);CAR_RET;\
 GEN_b_e_val_compare(function)
 
+#define GEN_general_b_e_it(Const, direction, function)\
+template<typename Container_t, typename Iterator_t>CAR_RET;\
+inline auto direction##function(Container_t Const& c, Iterator_t it) -> decltype(call_b_e_it(direction, function, c, it)) {CAR_RET;\
+    return call_b_e_it(direction, function, c, it);CAR_RET;\
+}
+#define GEN_b_e_it(function)\
+GEN_general_b_e_it(     ,  , function);CAR_RET;\
+GEN_general_b_e_it(const,  , function);CAR_RET;\
+GEN_general_b_e_it(     , r, function);CAR_RET;\
+GEN_general_b_e_it(const, r, function);CAR_RET
+
+#define GEN_general_b_e_it_pred(Const, direction, function)\
+template<typename Container_t, typename Iterator_t, typename Predicate_t>CAR_RET;\
+inline auto direction##function(Container_t Const& c, Iterator_t it, Predicate_t pred) -> decltype(call_b_e_it_pred(direction, function, c, it, pred)) {CAR_RET;\
+    return call_b_e_it_pred(direction, function, c, it, pred);CAR_RET;\
+}
+#define GEN_b_e_it_pred(function)\
+GEN_general_b_e_it_pred(     ,  , function);CAR_RET;\
+GEN_general_b_e_it_pred(const,  , function);CAR_RET;\
+GEN_general_b_e_it_pred(     , r, function);CAR_RET;\
+GEN_general_b_e_it_pred(const, r, function);CAR_RET
+
+#define GEN_it_num_it(function)\
+template<typename IteratorLeft_t, typename Num_t, typename IteratorRight_t>CAR_RET;\
+inline auto function(IteratorLeft_t it_l, Num_t num, IteratorRight_t it_r) -> decltype(call_it_num_it(function, it_l, num, it_r)) {CAR_RET;\
+    return call_it_num_it(function, it_l, num, it_r);CAR_RET;\
+};CAR_RET
+
+#define GEN_it_num_val(function)\
+template<typename Iterator_t, typename Num_t, typename T>CAR_RET;\
+inline auto function(Iterator_t it, Num_t num, T const/*This is always const!*/& val) -> decltype(call_it_num_val(function, it, num, val)) {CAR_RET;\
+    return call_it_num_val(function, it, num, val);CAR_RET;\
+};CAR_RET
+
 namespace STLPP_namespace {
-#define r r
-//GEN_b_e_general(adjacent_find, r);
-//GEN_b_e_general(adjacent_find,);
 GEN_b_e_and_b_e_pred(adjacent_find);
 GEN_b_e_and_b_e_pred(max_element);
 GEN_b_e_val_and_b_e_val_compare(binary_search);
+
+GEN_b_e_it(copy);
+GEN_b_e_it(copy_backward);
+GEN_b_e_it_pred(copy_if);
+GEN_it_num_it(copy_n);
+GEN_b_e_val(count);
+GEN_b_e_pred(count_if);
+GEN_b_e_it_pred(equal);
+GEN_b_e_val_and_b_e_val_compare(equal_range);
+GEN_b_e_val(fill);
+GEN_it_num_val(fill_n);
+GEN_b_e_val(find);
 
 #if __cplusplus >= 201103L
 
