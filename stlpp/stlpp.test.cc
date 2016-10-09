@@ -178,3 +178,23 @@ generic_test_function_0_params_for_copy(1, copy, std::vector<int>({1, 2, 3, 4, 5
 generic_test_function_0_params_for_copy(2, copy, std::vector<int>({}));
 generic_test_function_0_params_for_copy(3, copy, std::vector<int>());
 generic_test_function_0_params_for_copy(4, copy, std::vector<int>(10, 10));
+
+#define specific_test_function_0_params_for_copy_backward(tag, function, input, direction, Const)\
+TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##_0_params_for_copy_backward) {\
+    std::vector<int> Const v = input;\
+    std::vector<int> expected(v.size());\
+    std::vector<int> actual(v.size());\
+    std::function(stdpp::direction##begin(v), stdpp::direction##end(v), expected.end());\
+    stdpp::direction##function(v, actual.end());\
+\
+    ASSERT_EQ(expected, actual);\
+}
+#define generic_test_function_0_params_for_copy_backward(tag, function, input)\
+specific_test_function_0_params_for_copy_backward(tag, function, input, , );\
+specific_test_function_0_params_for_copy_backward(tag, function, input, , const);\
+specific_test_function_0_params_for_copy_backward(tag, function, input, r, );\
+specific_test_function_0_params_for_copy_backward(tag, function, input, r, const);
+generic_test_function_0_params_for_copy_backward(1, copy_backward, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
+generic_test_function_0_params_for_copy_backward(2, copy_backward, std::vector<int>({}));
+generic_test_function_0_params_for_copy_backward(3, copy_backward, std::vector<int>());
+generic_test_function_0_params_for_copy_backward(4, copy_backward, std::vector<int>(10, 9));
