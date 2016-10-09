@@ -25,7 +25,7 @@
 #define CAR_RET CAR_RET
 
 namespace STLPP_namespace {
-#if __cplusplus >= 201103L
+//#if __cplusplus >= 201103L
 template<typename Container_t> inline auto begin(Container_t& c) -> decltype(std::begin(c)) {
     return std::begin(c);
 }
@@ -38,22 +38,22 @@ template<typename Container_t> inline auto end(Container_t& c) -> decltype(std::
 template<typename Container_t> inline auto end(Container_t const& c) -> decltype(std::end(c)) {
     return std::end(c);
 }
-#else
-template<typename Container_t> inline typename Container_t::iterator begin(Container_t& c) {return c.begin();}
-template<typename Container_t> inline typename Container_t::iterator begin(Container_t const& c) {return c.begin();}
-template<typename Container_t> inline typename Container_t::iterator end(Container_t& c) {return c.end();}
-template<typename Container_t> inline typename Container_t::iterator end(Container_t const& c) {return c.end();}
-#endif
-template<typename Container_t> inline typename Container_t::iterator rbegin(Container_t& c) {
+//#else
+//template<typename Container_t> inline typename Container_t::iterator begin(Container_t& c) {return c.begin();}
+//template<typename Container_t> inline typename Container_t::iterator begin(Container_t const& c) {return c.begin();}
+//template<typename Container_t> inline typename Container_t::iterator end(Container_t& c) {return c.end();}
+//template<typename Container_t> inline typename Container_t::iterator end(Container_t const& c) {return c.end();}
+//#endif
+template<typename Container_t> inline auto rbegin(Container_t& c) -> decltype(c.rbegin()) {
     return c.rbegin();
 }
-template<typename Container_t> inline typename Container_t::iterator rbegin(Container_t const& c) {
+template<typename Container_t> inline auto rbegin(Container_t const& c) -> decltype(c.rbegin()) {
     return c.rbegin();
 }
-template<typename Container_t> inline typename Container_t::iterator rend(Container_t& c) {
+template<typename Container_t> inline auto rend(Container_t& c) -> decltype(c.rend()) {
     return c.rend();
 }
-template<typename Container_t> inline typename Container_t::iterator rend(Container_t const& c) {
+template<typename Container_t> inline auto rend(Container_t const& c) -> decltype(c.rend()) {
     return c.rend();
 }
 }

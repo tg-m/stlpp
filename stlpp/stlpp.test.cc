@@ -53,121 +53,108 @@ bool int_less(int l, int r) {
     return l < r;
 }
 
-TEST_F(TemplateTest, adjacent_find_it_it) {
-    int init_tab[] = {1, 2, 3, 4, 5, 5, 3, 2, 6, 7};
-    std::vector<int> v(init_tab, init_tab + sizeof(init_tab)/sizeof(int));
-    std::vector<int>::iterator expected = std::adjacent_find(stdpp::begin(v), stdpp::end(v));
-    std::vector<int>::iterator actual = stdpp::adjacent_find(v);
-
-    ASSERT_EQ(expected, actual);
-    ASSERT_EQ(*expected, *actual);
-    ASSERT_EQ(*(expected + 1), *(1 + actual));
-    ASSERT_EQ(5, *actual);
+#define special_general_adjacent_find_it_it(direction, Const, input)\
+TEST_F(TemplateTest, special_general_##direction##_##Const##_adjacent_find_it_it) {\
+    std::vector<int> Const v = input;\
+    auto expected = std::adjacent_find(stdpp::direction##begin(v), stdpp::direction##end(v));\
+    auto actual = stdpp::direction##adjacent_find(v);\
+\
+    ASSERT_EQ(expected, actual);\
+    ASSERT_EQ(*expected, *actual);\
+    ASSERT_EQ(*(expected + 1), *(1 + actual));\
+    ASSERT_EQ(5, *actual);\
 }
-TEST_F(TemplateTest, adjacent_find_it_it_pred) {
-    int init_tab[] = {1, 2, 3, 4, 5, 5, 3, 2, 6, 7};
-    std::vector<int> v(init_tab, init_tab + sizeof(init_tab)/sizeof(int));
-    std::vector<int>::iterator expected = std::adjacent_find(stdpp::begin(v), stdpp::end(v), int_eq);
-    std::vector<int>::iterator actual = stdpp::adjacent_find(v, int_eq);
+special_general_adjacent_find_it_it(,, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7}));
+special_general_adjacent_find_it_it(, const, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7}));
+special_general_adjacent_find_it_it(r,, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7}));
+special_general_adjacent_find_it_it(r, const, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7}));
 
-    ASSERT_EQ(expected, actual);
-    ASSERT_EQ(*expected, *actual);
-    ASSERT_EQ(*(expected + 1), *(1 + actual));
-    ASSERT_EQ(5, *actual);
+#define special_general_adjacent_find_it_it_pred(direction, Const, input)\
+TEST_F(TemplateTest, special_general_##direction##_##Const##_adjacent_find_it_it_pred) {\
+    std::vector<int> Const v = input;\
+    auto expected = std::adjacent_find(stdpp::direction##begin(v), stdpp::direction##end(v), int_eq);\
+    auto actual = stdpp::direction##adjacent_find(v, int_eq);\
+\
+    ASSERT_EQ(expected, actual);\
+    ASSERT_EQ(*expected, *actual);\
+    ASSERT_EQ(*(expected + 1), *(1 + actual));\
+    ASSERT_EQ(5, *actual);\
 }
+special_general_adjacent_find_it_it_pred(,, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7}));
+special_general_adjacent_find_it_it_pred(, const, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7}));
+special_general_adjacent_find_it_it_pred(r,, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7}));
+special_general_adjacent_find_it_it_pred(r, const, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7}));
 
-TEST_F(TemplateTest, binary_search_it_it_val_true) {
-    int init_tab[] = {1, 2, 3, 4, 5, 6, 7, 8, 9}; /* MUST BE SORTED -- binary_search requirement! */
-    std::vector<int> v(init_tab, init_tab + sizeof(init_tab)/sizeof(int));
-    bool expected = std::binary_search(stdpp::begin(v), stdpp::end(v), 9);
-    bool actual = stdpp::binary_search(v, 9);
-
-    ASSERT_EQ(expected, actual);
-    ASSERT_EQ(true, actual);
-    ASSERT_EQ(true, expected);
+#define specific_test_function_0_params(tag, function, input, direction, Const)\
+TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##_0_params) {\
+    std::vector<int> Const v = input;\
+    auto expected = std::function(stdpp::direction##begin(v), stdpp::direction##end(v));\
+    auto actual = stdpp::direction##function(v);\
+\
+    ASSERT_EQ(expected, actual);\
 }
-TEST_F(TemplateTest, binary_search_it_it_val_false) {
-    int init_tab[] = {1, 2, 3, 4, 5, 6, 7, 8, 9}; /* MUST BE SORTED -- binary_search requirement! */
-    std::vector<int> v(init_tab, init_tab + sizeof(init_tab)/sizeof(int));
-    bool expected = std::binary_search(stdpp::begin(v), stdpp::end(v), 0);
-    bool actual = stdpp::binary_search(v, 0);
+#define generic_test_function_0_params(tag, function, input)\
+specific_test_function_0_params(tag, function, input, , );\
+specific_test_function_0_params(tag, function, input, , const);\
+specific_test_function_0_params(tag, function, input, r, );\
+specific_test_function_0_params(tag, function, input, r, const);
 
-    ASSERT_EQ(expected, actual);
-    ASSERT_EQ(false, actual);
+#define specific_test_function_1_params(tag, function, paramOne, input, direction, Const)\
+TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##__1_params) {\
+    std::vector<int> Const v = input;\
+    auto expected = std::function(stdpp::direction##begin(v), stdpp::direction##end(v), paramOne);\
+    auto actual = stdpp::direction##function(v, paramOne);\
+\
+    ASSERT_EQ(expected, actual);\
 }
-TEST_F(TemplateTest, binary_search_it_it_val_compare_true) {
-    int init_tab[] = {1, 2, 3, 4, 5, 6, 7, 8, 9}; /* MUST BE SORTED -- binary_search requirement! */
-    std::vector<int> v(init_tab, init_tab + sizeof(init_tab)/sizeof(int));
-    bool expected = std::binary_search(stdpp::begin(v), stdpp::end(v), 9, int_less);
-    bool actual = stdpp::binary_search(v, 9, int_less);
+#define generic_test_function_1_params(tag, function, paramOne, input)\
+specific_test_function_1_params(tag, function, paramOne, input, , );\
+specific_test_function_1_params(tag, function, paramOne, input, , const);\
+specific_test_function_1_params(tag, function, paramOne, input, r, );\
+specific_test_function_1_params(tag, function, paramOne, input, r, const);
 
-    ASSERT_EQ(expected, actual);
-    ASSERT_EQ(true, actual);
+#define specific_test_function_2_params(tag, function, paramOne, paramTwo, input, direction, Const)\
+TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##__2_params) {\
+    std::vector<int> Const v = input;\
+    auto expected = std::function(stdpp::direction##begin(v), stdpp::direction##end(v), paramOne, paramTwo);\
+    auto actual = stdpp::direction##function(v, paramOne, paramTwo);\
+\
+    ASSERT_EQ(expected, actual);\
 }
-TEST_F(TemplateTest, binary_search_it_it_val_compare_false) {
-    int init_tab[] = {1, 2, 3, 4, 5, 6, 7, 8, 9}; /* MUST BE SORTED -- binary_search requirement! */
-    std::vector<int> v(init_tab, init_tab + sizeof(init_tab)/sizeof(int));
-    bool expected = std::binary_search(stdpp::begin(v), stdpp::end(v), 11, int_less);
-    bool actual = stdpp::binary_search(v, 11, int_less);
+#define generic_test_function_2_params(tag, function, paramOne, paramTwo, input)\
+specific_test_function_2_params(tag, function, paramOne, paramTwo, input, , );\
+specific_test_function_2_params(tag, function, paramOne, paramTwo, input, , const);\
+specific_test_function_2_params(tag, function, paramOne, paramTwo, input, r, );\
+specific_test_function_2_params(tag, function, paramOne, paramTwo, input, r, const);
 
-    ASSERT_EQ(expected, actual);
-    ASSERT_EQ(false, expected);
-    ASSERT_EQ(false, actual);
+#define specific_test_function_3_params(tag, function, paramOne, paramTwo, paramThree, input, direction, Const)\
+TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##__3_params) {\
+    std::vector<int> Const v = input;\
+    auto expected = std::function(stdpp::direction##begin(v), stdpp::direction##end(v), paramOne, paramTwo, paramThree);\
+    auto actual = stdpp::direction##function(v, paramOne, paramTwo, paramThree);\
+\
+    ASSERT_EQ(expected, actual);\
 }
+#define generic_test_function_3_params(tag, function, paramOne, paramTwo, paramThree, input)\
+specific_test_function_3_params(tag, function, paramOne, paramTwo, paramThree, input, , );\
+specific_test_function_3_params(tag, function, paramOne, paramTwo, paramThree, input, , const);\
+specific_test_function_3_params(tag, function, paramOne, paramTwo, paramThree, input, r, );\
+specific_test_function_3_params(tag, function, paramOne, paramTwo, paramThree, input, r, const);
 
-/*
- * Algorithms that were added in C++11
- */
-#if __cplusplus >= 201103L
+generic_test_function_0_params(1, adjacent_find, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7}));
+generic_test_function_0_params(2, adjacent_find, std::vector<int>({1, 2, 3, 4, 5, 3, 2, 6, 7}));
+generic_test_function_1_params(1, adjacent_find, int_eq, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7}));
+generic_test_function_1_params(2, adjacent_find, int_eq, std::vector<int>({1, 2, 3, 4, 5, 3, 2, 6, 7}));
 
-TEST_F(TemplateTest, all_of_it_it_pred_true) {
-    int init_tab[] = {1, 2, 3, 4, 5, 5, 3, 2, 6, 7};
-    std::vector<int> v(init_tab, init_tab + sizeof(init_tab)/sizeof(int));
+generic_test_function_1_params(1, binary_search, 9, std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9}/* MUST BE SORTED -- binary_search requirement! */));
+generic_test_function_1_params(2, binary_search, 123, std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9}/* MUST BE SORTED -- binary_search requirement! */));
+generic_test_function_2_params(1, binary_search, 9, int_less, std::vector<int>( {1, 2, 3, 4, 5, 6, 7, 8, 9}/* MUST BE SORTED */));
+generic_test_function_2_params(2, binary_search, 123, int_less, std::vector<int>( {1, 2, 3, 4, 5, 6, 7, 8, 9}/* MUST BE SORTED */));
 
-    auto pred = [](int i) -> bool {return i >= 0;};
+auto const geq_zero_int = [](int i) -> bool {return i >= 0;};
+generic_test_function_1_params(1, all_of, geq_zero_int, std::vector<int>( {1, 2, 3, 4, 5, 5, 3, 2, 6, 7, -1}));
+generic_test_function_1_params(2, all_of, geq_zero_int, std::vector<int>( {1, 2, 3, 4, 5, 3, 2, 6, 7}));
 
-    bool expected = std::all_of(std::begin(v), std::end(v), pred);
-    bool actual = stdpp::all_of(v, pred);
-
-    ASSERT_EQ(expected, actual);
-    ASSERT_EQ(true, actual);
-}
-TEST_F(TemplateTest, all_of_it_it_pred_false) {
-    int init_tab[] = {1, 2, 3, 4, 5, 5, 3, 2, -2, 6, 7};
-    std::vector<int> v(init_tab, init_tab + sizeof(init_tab)/sizeof(int));
-
-    auto pred = [](int i) -> bool {return i >= 0;};
-
-    bool expected = std::all_of(std::begin(v), std::end(v), pred);
-    bool actual = stdpp::all_of(v, pred);
-
-    ASSERT_EQ(expected, actual);
-    ASSERT_EQ(false, actual);
-}
-
-TEST_F(TemplateTest, any_of_it_it_pred_true) {
-    int init_tab[] = {1, 2, 3, 4, 5, 5, 3, 2, 7, -1};
-    std::vector<int> v(init_tab, init_tab + sizeof(init_tab)/sizeof(int));
-
-    auto pred = [](int i) -> bool {return i < 0;};
-
-    bool expected = std::any_of(std::begin(v), std::end(v), pred);
-    bool actual = stdpp::any_of(v, pred);
-
-    ASSERT_EQ(expected, actual);
-    ASSERT_EQ(true, actual);
-}
-TEST_F(TemplateTest, any_of_it_it_pred_false) {
-    int init_tab[] = {1, 2, 3, 4, 5, 5, 3, 2, 6, 7};
-    std::vector<int> v(init_tab, init_tab + sizeof(init_tab)/sizeof(int));
-
-    auto pred = [](int i) -> bool {return i < 0;};
-
-    bool expected = std::any_of(std::begin(v), std::end(v), pred);
-    bool actual = stdpp::any_of(v, pred);
-
-    ASSERT_EQ(expected, actual);
-    ASSERT_EQ(false, actual);
-}
-
-#endif
+auto const less_than_zero_int = [](int i) -> bool {return i < 0;};
+generic_test_function_1_params(1, any_of, less_than_zero_int, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, -1}));
+generic_test_function_1_params(2, any_of, less_than_zero_int, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
