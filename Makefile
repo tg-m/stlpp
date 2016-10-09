@@ -34,6 +34,8 @@ INC := $(addprefix -I, $(SRC_DIR))
 SRC :=
 SRC := $(shell find $(SRC_DIR) ! -name "*.test.cc" -name "*.cc")
 
+IN_HH := $(shell find $(SRC_DIR) -name "*.in.hh")
+
 COVERAGE_SRC := $(shell for f in $(SRC); do echo "$$f" | grep "$(CFILTER)"; done)
 COVERAGE_RESULT_FILES := $(shell find . -name "*.gcda" -o -name "*.gcno" -o -name "*.gcov")
 
@@ -42,7 +44,7 @@ OBJ=$(patsubst %.cc,%.o,$(SRC))
 MAIN_O=$(patsubst %.cc,%.o,$(MAIN))
 
 
-all: test_ # build_ package_ main_ link_
+all: generate_header_ test_ # build_ package_ main_ link_
 
 
 clean: clean_
@@ -51,6 +53,11 @@ package: build_ package_
 test: test_
 install: install_
 remove: remove_
+generate_header: generate_header_
+
+generate_header_:
+	@echo "Generating header"
+	@echo $(shell $(CXX) $(CXXFLAGS) -E $(SRC_DIR)/stlpp.in.hh | grep -v "^\#" > $(SRC_DIR)/stlpp.gen.hh)
 
 
 coverage:
@@ -113,6 +120,8 @@ printCxxFlags:
 printSrc:
 	@echo $(SRC)
 
+printInhh:
+	@echo $(IN_HH)
 
 printObj:
 	@echo $(OBJ)
@@ -129,7 +138,7 @@ printCoverageSrc:
 printCoverageResultFiles:
 	@echo $(COVERAGE_RESULT_FILES)
 
-.PHONY : all clean build clean_ build_ link_
+.PHONY : all clean build clean_ build_ link_ generate_header generate_header_
 .PHONY : main_ package_ package
 .PHONY : test_ test
 .PHONY : printInc printLdflags printCflags printSrc printCoverageResultFiles printCoverageSrc

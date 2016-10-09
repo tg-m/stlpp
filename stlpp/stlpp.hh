@@ -27,25 +27,25 @@
 #define STLPP_namespace stdpp
 
 namespace STLPP_namespace {
-#if __cplusplus >= 201103L
-template<typename Container_t> inline auto begin(Container_t& c) -> decltype(std::begin(c)) {
-    return std::begin(c);
-}
-template<typename Container_t> inline auto begin(Container_t const& c) -> decltype(std::begin(c)) {
-    return std::begin(c);
-}
-template<typename Container_t> inline auto end(Container_t& c) -> decltype(std::end(c)) {
-    return std::end(c);
-}
-template<typename Container_t> inline auto end(Container_t const& c) -> decltype(std::end(c)) {
-    return std::end(c);
-}
-#else
-template<typename Container_t> inline typename Container_t::iterator begin(Container_t& c) {return c.begin();}
-template<typename Container_t> inline typename Container_t::iterator begin(Container_t const& c) {return c.begin();}
-template<typename Container_t> inline typename Container_t::iterator end(Container_t& c) {return c.end();}
-template<typename Container_t> inline typename Container_t::iterator end(Container_t const& c) {return c.end();}
-#endif
+//#if __cplusplus >= 201103L
+//template<typename Container_t> inline auto begin(Container_t& c) -> decltype(std::begin(c)) {
+//    return std::begin(c);
+//}
+//template<typename Container_t> inline auto begin(Container_t const& c) -> decltype(std::begin(c)) {
+//    return std::begin(c);
+//}
+//template<typename Container_t> inline auto end(Container_t& c) -> decltype(std::end(c)) {
+//    return std::end(c);
+//}
+//template<typename Container_t> inline auto end(Container_t const& c) -> decltype(std::end(c)) {
+//    return std::end(c);
+//}
+//#else
+//template<typename Container_t> inline typename Container_t::iterator begin(Container_t& c) {return c.begin();}
+//template<typename Container_t> inline typename Container_t::iterator begin(Container_t const& c) {return c.begin();}
+//template<typename Container_t> inline typename Container_t::iterator end(Container_t& c) {return c.end();}
+//template<typename Container_t> inline typename Container_t::iterator end(Container_t const& c) {return c.end();}
+//#endif
 
 }
 /* namespace stdpp */
@@ -104,6 +104,15 @@ inline bool function(Container_t const& c, T const& val, Compare_t const& compar
 GEN_it_it_val_RETURN_bool(function);\
 GEN_it_it_val_compare_RETURN_bool(function)
 
+#define GEN_it_it_RETURN_auto(function)\
+template<typename Container_t>\
+inline auto function(Container_t& c) {\
+return std::function(STLPP_namespace::begin(c), STLPP_namespace::end(c));\
+}
+
+#define proper_GEN_it_it(function) GEN_it_it(function)
+#define proper_GEN_it_it_pred(function) GEN_it_it_pred(function)
+
 /*
  * define(function, return type (but how extract iterator in c++98? there is decltype), argments(?), c++ min version, c++ max version)
  *
@@ -125,18 +134,20 @@ GEN_it_it_val_compare_RETURN_bool(function)
 
 namespace STLPP_namespace {
 
-GEN_it_it_and_it_it_pred(adjacent_find);
-GEN_it_it_val_and_it_it_val_compare_RETURN_bool(binary_search);
-GEN_it_it(max_element);
-
-/*
- * Algorithms that were added in C++11
- */
-#if __cplusplus >= 201103L
-GEN_it_it_pred_RETURN_bool(all_of);
-GEN_it_it_pred_RETURN_bool(any_of);
-#endif
+//GEN_it_it_and_it_it_pred(adjacent_find);
+//GEN_it_it_val_and_it_it_val_compare_RETURN_bool(binary_search);
+//GEN_it_it_RETURN_auto(max_element);
+//
+///*
+// * Algorithms that were added in C++11
+// */
+//#if __cplusplus >= 201103L
+//GEN_it_it_pred_RETURN_bool(all_of);
+//GEN_it_it_pred_RETURN_bool(any_of);
+//#endif
 
 } /* namespace stdpp */
+
+#include "stlpp.gen.hh"
 
 #endif /* STLPP_STLPP_HH_ */

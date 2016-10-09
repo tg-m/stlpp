@@ -36,3 +36,6 @@
 
 # Run
 *.run
+
+# No generated headers
+stlpp/stlpp.gen.hh
