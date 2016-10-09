@@ -143,13 +143,17 @@ specific_test_function_3_params(tag, function, paramOne, paramTwo, paramThree, i
 
 generic_test_function_0_params(1, adjacent_find, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7}));
 generic_test_function_0_params(2, adjacent_find, std::vector<int>({1, 2, 3, 4, 5, 3, 2, 6, 7}));
+generic_test_function_0_params(3, adjacent_find, std::vector<int>());
 generic_test_function_1_params(1, adjacent_find, int_eq, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7}));
 generic_test_function_1_params(2, adjacent_find, int_eq, std::vector<int>({1, 2, 3, 4, 5, 3, 2, 6, 7}));
+generic_test_function_1_params(3, adjacent_find, int_eq, std::vector<int>());
 
 generic_test_function_1_params(1, binary_search, 9, std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9}/* MUST BE SORTED -- binary_search requirement! */));
 generic_test_function_1_params(2, binary_search, 123, std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9}/* MUST BE SORTED -- binary_search requirement! */));
-generic_test_function_2_params(1, binary_search, 9, int_less, std::vector<int>( {1, 2, 3, 4, 5, 6, 7, 8, 9}/* MUST BE SORTED */));
-generic_test_function_2_params(2, binary_search, 123, int_less, std::vector<int>( {1, 2, 3, 4, 5, 6, 7, 8, 9}/* MUST BE SORTED */));
+generic_test_function_1_params(3, binary_search, 123, std::vector<int>());
+generic_test_function_2_params(1, binary_search, 9, int_less, std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9}/* MUST BE SORTED */));
+generic_test_function_2_params(2, binary_search, 123, int_less, std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9}/* MUST BE SORTED */));
+generic_test_function_2_params(3, binary_search, 123, int_less, std::vector<int>());
 
 auto const geq_zero_int = [](int i) -> bool {return i >= 0;};
 generic_test_function_1_params(1, all_of, geq_zero_int, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7, -1}));
@@ -198,3 +202,52 @@ generic_test_function_0_params_for_copy_backward(1, copy_backward, std::vector<i
 generic_test_function_0_params_for_copy_backward(2, copy_backward, std::vector<int>({}));
 generic_test_function_0_params_for_copy_backward(3, copy_backward, std::vector<int>());
 generic_test_function_0_params_for_copy_backward(4, copy_backward, std::vector<int>(10, 9));
+
+#define specific_test_function_0_params_for_copy_if(tag, function, pred, input, direction, Const)\
+TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##_0_params_for_copy_if) {\
+    std::vector<int> Const v = input;\
+    std::vector<int> expected(v.size());\
+    std::vector<int> actual(v.size());\
+    std::function(stdpp::direction##begin(v), stdpp::direction##end(v), expected.begin(), pred);\
+    stdpp::direction##function(v, actual.begin(), pred);\
+\
+    ASSERT_EQ(expected, actual);\
+}
+#define generic_test_function_0_params_for_copy_if(tag, function, pred, input)\
+specific_test_function_0_params_for_copy_if(tag, function, pred, input, , );\
+specific_test_function_0_params_for_copy_if(tag, function, pred, input, , const);\
+specific_test_function_0_params_for_copy_if(tag, function, pred, input, r, );\
+specific_test_function_0_params_for_copy_if(tag, function, pred, input, r, const);
+generic_test_function_0_params_for_copy_if(1, copy_if, [](int i) { return 0 == i % 2; }, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
+generic_test_function_0_params_for_copy_if(10, copy_if, [](int i) { return 0 >= i; }, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
+generic_test_function_0_params_for_copy_if(2, copy_if, [](int i) { return 0 == i % 2; }, std::vector<int>({}));
+generic_test_function_0_params_for_copy_if(3, copy_if, [](int i) { return 0 == i % 2; }, std::vector<int>());
+generic_test_function_0_params_for_copy_if(4, copy_if, [](int i) { return 0 == i % 2; }, std::vector<int>(10, 10));
+
+#define specific_test_function_0_params_for_copy_n(tag, function, num, input, direction, Const)\
+TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##_0_params_for_copy_n) {\
+    std::vector<int> Const v = input;\
+    std::vector<int> expected;\
+    std::vector<int> actual;\
+    expected.resize(v.size());\
+    actual.resize(v.size());\
+    std::function(stdpp::begin(v), num, expected.begin());\
+    stdpp::function(stdpp::begin(v), num, actual.begin());\
+\
+    ASSERT_EQ(expected, actual);\
+}
+#define generic_test_function_0_params_for_copy_n(tag, function, num, input)\
+specific_test_function_0_params_for_copy_n(tag, function, num, input, , );\
+specific_test_function_0_params_for_copy_n(tag, function, num, input, , const);
+generic_test_function_0_params_for_copy_n(1, copy_n, 5, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
+
+generic_test_function_1_params(1, count, 7, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, -1}));
+generic_test_function_1_params(2, count, 7, std::vector<int>({}));
+generic_test_function_1_params(3, count, 7, std::vector<int>());
+generic_test_function_1_params(4, count, 9877, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, -1}));
+
+generic_test_function_1_params(1, count_if, [](int i) { return 0 > i; }, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, -1}));
+generic_test_function_1_params(2, count_if, [](int i) { return 0 > i; }, std::vector<int>({}));
+generic_test_function_1_params(3, count_if, [](int i) { return 0 > i; }, std::vector<int>());
+generic_test_function_1_params(4, count_if, [](int i) { return false; }, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, -1}));
+generic_test_function_1_params(5, count_if, [](int i) { return true; }, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, -1}));
