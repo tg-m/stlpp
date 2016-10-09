@@ -152,9 +152,29 @@ generic_test_function_2_params(1, binary_search, 9, int_less, std::vector<int>( 
 generic_test_function_2_params(2, binary_search, 123, int_less, std::vector<int>( {1, 2, 3, 4, 5, 6, 7, 8, 9}/* MUST BE SORTED */));
 
 auto const geq_zero_int = [](int i) -> bool {return i >= 0;};
-generic_test_function_1_params(1, all_of, geq_zero_int, std::vector<int>( {1, 2, 3, 4, 5, 5, 3, 2, 6, 7, -1}));
-generic_test_function_1_params(2, all_of, geq_zero_int, std::vector<int>( {1, 2, 3, 4, 5, 3, 2, 6, 7}));
+generic_test_function_1_params(1, all_of, geq_zero_int, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 6, 7, -1}));
+generic_test_function_1_params(2, all_of, geq_zero_int, std::vector<int>({1, 2, 3, 4, 5, 3, 2, 6, 7}));
 
 auto const less_than_zero_int = [](int i) -> bool {return i < 0;};
 generic_test_function_1_params(1, any_of, less_than_zero_int, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, -1}));
 generic_test_function_1_params(2, any_of, less_than_zero_int, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
+
+#define specific_test_function_0_params_for_copy(tag, function, input, direction, Const)\
+TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##_0_params_for_copy) {\
+    std::vector<int> Const v = input;\
+    std::vector<int> expected(v.size());\
+    std::vector<int> actual(v.size());\
+    std::function(stdpp::direction##begin(v), stdpp::direction##end(v), expected.begin());\
+    stdpp::direction##function(v, actual.begin());\
+\
+    ASSERT_EQ(expected, actual);\
+}
+#define generic_test_function_0_params_for_copy(tag, function, input)\
+specific_test_function_0_params_for_copy(tag, function, input, , );\
+specific_test_function_0_params_for_copy(tag, function, input, , const);\
+specific_test_function_0_params_for_copy(tag, function, input, r, );\
+specific_test_function_0_params_for_copy(tag, function, input, r, const);
+generic_test_function_0_params_for_copy(1, copy, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
+generic_test_function_0_params_for_copy(2, copy, std::vector<int>({}));
+generic_test_function_0_params_for_copy(3, copy, std::vector<int>());
+generic_test_function_0_params_for_copy(4, copy, std::vector<int>(10, 10));
