@@ -44,7 +44,7 @@ OBJ=$(patsubst %.cc,%.o,$(SRC))
 MAIN_O=$(patsubst %.cc,%.o,$(MAIN))
 
 
-all: generate_header_ test_ # build_ package_ main_ link_
+all: generate_header_ # test_ # build_ package_ main_ link_
 
 
 clean: clean_
@@ -52,7 +52,7 @@ build: build_
 package: build_ package_
 test: test_
 install: install_
-remove: remove_
+uninstall: uninstall_
 generate_header: generate_header_
 
 generate_header_:
@@ -100,10 +100,13 @@ test_:
 
 
 install_:
+	mkdir -p $(INSTALL_DIR)
 	cp $(SRC_DIR)/stlpp.hh $(INSTALL_DIR)
+	cp $(SRC_DIR)/stlpp.gen.hh $(INSTALL_DIR)
 
-remove_:
+uninstall_:
 	rm $(INSTALL_DIR)/stlpp.hh
+	rm $(INSTALL_DIR)/stlpp.gen.hh
 
 printInc:
 	@echo $(INC)
@@ -139,7 +142,7 @@ printCoverageResultFiles:
 	@echo $(COVERAGE_RESULT_FILES)
 
 .PHONY : all clean build clean_ build_ link_ generate_header generate_header_
-.PHONY : main_ package_ package
+.PHONY : main_ package_ package uninstall uninstall_ install install_
 .PHONY : test_ test
 .PHONY : printInc printLdflags printCflags printSrc printCoverageResultFiles printCoverageSrc
 .PHONY : coverage average_coverage

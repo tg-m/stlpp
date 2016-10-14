@@ -219,10 +219,10 @@ specific_test_function_0_params_for_copy_if(tag, function, pred, input, , const)
 specific_test_function_0_params_for_copy_if(tag, function, pred, input, r, );\
 specific_test_function_0_params_for_copy_if(tag, function, pred, input, r, const);
 generic_test_function_0_params_for_copy_if(1, copy_if, [](int i) { return 0 == i % 2; }, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
-generic_test_function_0_params_for_copy_if(10, copy_if, [](int i) { return 0 >= i; }, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
-generic_test_function_0_params_for_copy_if(2, copy_if, [](int i) { return 0 == i % 2; }, std::vector<int>({}));
-generic_test_function_0_params_for_copy_if(3, copy_if, [](int i) { return 0 == i % 2; }, std::vector<int>());
-generic_test_function_0_params_for_copy_if(4, copy_if, [](int i) { return 0 == i % 2; }, std::vector<int>(10, 10));
+generic_test_function_0_params_for_copy_if(2, copy_if, [](int i) { return 0 >= i; }, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
+generic_test_function_0_params_for_copy_if(3, copy_if, [](int i) { return 0 == i % 2; }, std::vector<int>({}));
+generic_test_function_0_params_for_copy_if(4, copy_if, [](int i) { return 0 == i % 2; }, std::vector<int>());
+generic_test_function_0_params_for_copy_if(5, copy_if, [](int i) { return 0 == i % 2; }, std::vector<int>(10, 10));
 
 #define specific_test_function_0_params_for_copy_n(tag, function, num, input, direction, Const)\
 TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##_0_params_for_copy_n) {\
@@ -251,3 +251,33 @@ generic_test_function_1_params(2, count_if, [](int i) { return 0 > i; }, std::ve
 generic_test_function_1_params(3, count_if, [](int i) { return 0 > i; }, std::vector<int>());
 generic_test_function_1_params(4, count_if, [](int i) { return false; }, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, -1}));
 generic_test_function_1_params(5, count_if, [](int i) { return true; }, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, -1}));
+
+generic_test_function_1_params(1, equal, std::vector<int>({1, 2, 3, 4, 5}).begin(), std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_1_params(2, equal, std::vector<int>({1, 2, 3, 4, 5}).begin(), std::vector<int>({1, 2, 3, 4}));
+generic_test_function_1_params(3, equal, std::vector<int>({1, 2, 3, 4}).begin(), std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_1_params(4, equal, std::vector<int>({1, 2, 3, 4, 5}).rbegin(), std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_1_params(5, equal, std::vector<int>({1, 2, 3, 4, 5}).rbegin(), std::vector<int>({1, 2, 3, 4}));
+generic_test_function_1_params(6, equal, std::vector<int>({1, 2, 3, 4}).rbegin(), std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_1_params(7, equal, std::vector<int>({1, 2, 3, 4, 5}).cbegin(), std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_1_params(8, equal, std::vector<int>({1, 2, 3, 4, 5}).cbegin(), std::vector<int>({1, 2, 3, 4}));
+generic_test_function_1_params(9, equal, std::vector<int>({1, 2, 3, 4}).cbegin(), std::vector<int>({1, 2, 3, 4, 5}));
+
+generic_test_function_2_params(1, equal, std::vector<int>({1, 2, 3, 4, 5}).begin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_2_params(2, equal, std::vector<int>({1, 2, 3, 4, 5}).begin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4}));
+generic_test_function_2_params(3, equal, std::vector<int>({1, 2, 3, 4}).begin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_2_params(4, equal, std::vector<int>({1, 2, 3, 4, 5}).rbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_2_params(5, equal, std::vector<int>({1, 2, 3, 4, 5}).rbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4}));
+generic_test_function_2_params(6, equal, std::vector<int>({1, 2, 3, 4}).rbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_2_params(7, equal, std::vector<int>({1, 2, 3, 4, 5}).cbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_2_params(8, equal, std::vector<int>({1, 2, 3, 4, 5}).cbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4}));
+generic_test_function_2_params(9, equal, std::vector<int>({1, 2, 3, 4}).cbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
+
+generic_test_function_2_params(u1, equal, std::vector<int>({1, 2, 3, 4, 5}).begin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_2_params(u2, equal, std::vector<int>({1, 2, 3, 4, 5}).begin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4}));
+generic_test_function_2_params(u3, equal, std::vector<int>({1, 2, 3, 4}).begin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_2_params(u4, equal, std::vector<int>({1, 2, 3, 4, 5}).rbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_2_params(u5, equal, std::vector<int>({1, 2, 3, 4, 5}).rbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4}));
+generic_test_function_2_params(u6, equal, std::vector<int>({1, 2, 3, 4}).rbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_2_params(u7, equal, std::vector<int>({1, 2, 3, 4, 5}).cbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
+generic_test_function_2_params(u8, equal, std::vector<int>({1, 2, 3, 4, 5}).cbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4}));
+generic_test_function_2_params(u9, equal, std::vector<int>({1, 2, 3, 4}).cbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));

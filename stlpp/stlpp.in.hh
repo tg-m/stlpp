@@ -56,7 +56,7 @@ template<typename Container_t> inline auto rend(Container_t& c) -> decltype(c.re
 template<typename Container_t> inline auto rend(Container_t const& c) -> decltype(c.rend()) {
     return c.rend();
 }
-}
+//}
 /* namespace stdpp */
 
 /*
@@ -167,6 +167,10 @@ GEN_general_b_e_it_pred(const,  , function);CAR_RET;\
 GEN_general_b_e_it_pred(     , r, function);CAR_RET;\
 GEN_general_b_e_it_pred(const, r, function);CAR_RET
 
+#define GEN_b_e_it_and_b_e_it_pred(function)\
+GEN_b_e_it(function);CAR_RET;\
+GEN_b_e_it_pred(function);CAR_RET
+
 #define GEN_it_num_it(function)\
 template<typename IteratorLeft_t, typename Num_t, typename IteratorRight_t>CAR_RET;\
 inline auto function(IteratorLeft_t it_l, Num_t num, IteratorRight_t it_r) -> decltype(call_it_num_it(function, it_l, num, it_r)) {CAR_RET;\
@@ -179,7 +183,7 @@ inline auto function(Iterator_t it, Num_t num, T const/*This is always const!*/&
     return call_it_num_val(function, it, num, val);CAR_RET;\
 };CAR_RET
 
-namespace STLPP_namespace {
+//namespace STLPP_namespace {
 GEN_b_e_and_b_e_pred(adjacent_find);
 GEN_b_e_and_b_e_pred(max_element);
 GEN_b_e_val_and_b_e_val_compare(binary_search);
@@ -190,7 +194,7 @@ GEN_b_e_it_pred(copy_if);
 GEN_it_num_it(copy_n);
 GEN_b_e_val(count);
 GEN_b_e_pred(count_if);
-GEN_b_e_it_pred(equal);
+GEN_b_e_it_and_b_e_it_pred(equal);
 GEN_b_e_val_and_b_e_val_compare(equal_range);
 GEN_b_e_val(fill);
 GEN_it_num_val(fill_n);
