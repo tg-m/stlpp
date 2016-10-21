@@ -19,13 +19,10 @@
  *
  */
 
-//#ifndef STLPP_STLPP_IN_HH_
-//#define STLPP_STLPP_IN_HH_
 #define STLPP_namespace stdpp
 #define CAR_RET CAR_RET
 
 namespace STLPP_namespace {
-//#if __cplusplus >= 201103L
 template<typename Container_t> inline auto begin(Container_t& c) -> decltype(std::begin(c)) {
     return std::begin(c);
 }
@@ -38,12 +35,6 @@ template<typename Container_t> inline auto end(Container_t& c) -> decltype(std::
 template<typename Container_t> inline auto end(Container_t const& c) -> decltype(std::end(c)) {
     return std::end(c);
 }
-//#else
-//template<typename Container_t> inline typename Container_t::iterator begin(Container_t& c) {return c.begin();}
-//template<typename Container_t> inline typename Container_t::iterator begin(Container_t const& c) {return c.begin();}
-//template<typename Container_t> inline typename Container_t::iterator end(Container_t& c) {return c.end();}
-//template<typename Container_t> inline typename Container_t::iterator end(Container_t const& c) {return c.end();}
-//#endif
 template<typename Container_t> inline auto rbegin(Container_t& c) -> decltype(c.rbegin()) {
     return c.rbegin();
 }
@@ -56,8 +47,6 @@ template<typename Container_t> inline auto rend(Container_t& c) -> decltype(c.re
 template<typename Container_t> inline auto rend(Container_t const& c) -> decltype(c.rend()) {
     return c.rend();
 }
-//}
-/* namespace stdpp */
 
 /*
  * NOTE: call_b_e stands for call_begin_end
@@ -90,11 +79,6 @@ std::function(it_l, num, it_r)
 #define call_it_num_val(function, it_l, num, val)\
 std::function(it_l, num, val)
 
-//#define GEN_b_e_general(function, dir)\
-//template<typename Container_t>\
-//inline auto dir##function(Container_t& c) -> decltype(std::function(STLPP_namespace::dir##begin(c), STLPP_namespace::dir##end(c))) {\
-//return std::function(STLPP_namespace::dir##begin(c), STLPP_namespace::dir##end(c));\
-//}
 
 #define GEN_general_b_e(Const, direction, function)\
 template<typename Container_t> inline auto direction##function(Container_t Const& c) -> decltype(call_b_e(direction, function, c)) { return call_b_e(direction, function, c); }
@@ -129,6 +113,9 @@ GEN_general_b_e_val(     ,  , function);CAR_RET;\
 GEN_general_b_e_val(const,  , function);CAR_RET;\
 GEN_general_b_e_val(     , r, function);CAR_RET;\
 GEN_general_b_e_val(const, r, function);CAR_RET
+#define GEN_b_e_val_non_const(function)\
+GEN_general_b_e_val(     ,  , function);CAR_RET;\
+GEN_general_b_e_val(     , r, function);CAR_RET
 
 #define GEN_general_b_e_val_compare(Const, direction, function)\
 template<typename Container_t, typename T, typename Compare_t>CAR_RET;\
@@ -183,7 +170,6 @@ inline auto function(Iterator_t it, Num_t num, T const/*This is always const!*/&
     return call_it_num_val(function, it, num, val);CAR_RET;\
 };CAR_RET
 
-//namespace STLPP_namespace {
 GEN_b_e_and_b_e_pred(adjacent_find);
 GEN_b_e_and_b_e_pred(max_element);
 GEN_b_e_val_and_b_e_val_compare(binary_search);
@@ -196,17 +182,14 @@ GEN_b_e_val(count);
 GEN_b_e_pred(count_if);
 GEN_b_e_it_and_b_e_it_pred(equal);
 GEN_b_e_val_and_b_e_val_compare(equal_range);
-GEN_b_e_val(fill);
+GEN_b_e_val_non_const(fill);
 GEN_it_num_val(fill_n);
 GEN_b_e_val(find);
 
-#if __cplusplus >= 201103L
 
 GEN_b_e_pred(any_of);
 GEN_b_e_pred(all_of);
 
-#endif /* __clpusplus */
 
 } /* namespace STLPP_namespace */
 
-//#endif /* STLPP_STLPP_IN_HH_ */

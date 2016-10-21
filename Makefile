@@ -57,7 +57,8 @@ generate_header: generate_header_
 
 generate_header_:
 	@echo "Generating header"
-	@echo $(shell $(CXX) $(CXXFLAGS) -E  $(SRC_DIR)/stlpp.in.hh | sed 's/CAR_RET;/\n/g' | grep -v "^\#" > $(SRC_DIR)/stlpp.gen.hh)
+	@echo $(shell cat gen-comment.hh > $(SRC_DIR)/stlpp.gen.hh)
+	@echo $(shell $(CXX) $(CXXFLAGS) -E  $(SRC_DIR)/stlpp.in.hh | sed 's/CAR_RET;/\n/g' | grep -v "^\#" >> $(SRC_DIR)/stlpp.gen.hh)
 
 
 coverage:
