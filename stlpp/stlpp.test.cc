@@ -281,3 +281,17 @@ generic_test_function_2_params(u6, equal, std::vector<int>({1, 2, 3, 4}).rbegin(
 generic_test_function_2_params(u7, equal, std::vector<int>({1, 2, 3, 4, 5}).cbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
 generic_test_function_2_params(u8, equal, std::vector<int>({1, 2, 3, 4, 5}).cbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4}));
 generic_test_function_2_params(u9, equal, std::vector<int>({1, 2, 3, 4}).cbegin(), [](int l, int r) { return l == r; }, std::vector<int>({1, 2, 3, 4, 5}));
+
+/* Input vector must be sorted for equal_range! */
+generic_test_function_1_params(_1, equal_range, -1, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
+generic_test_function_1_params(0, equal_range, 0, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
+generic_test_function_1_params(1, equal_range, 1, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
+generic_test_function_1_params(2, equal_range, 2, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
+generic_test_function_1_params(9, equal_range, 9, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
+generic_test_function_1_params(10, equal_range, 10, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
+generic_test_function_2_params(_1, equal_range, -1, [](int l, int r) { return l < r; }, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
+generic_test_function_2_params(0, equal_range, 0, [](int l, int r) { return l < r; }, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
+generic_test_function_2_params(1, equal_range, 1, [](int l, int r) { return l < r; }, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
+generic_test_function_2_params(2, equal_range, 2, [](int l, int r) { return l < r; }, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
+generic_test_function_2_params(9, equal_range, 9, [](int l, int r) { return l < r; }, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
+generic_test_function_2_params(10, equal_range, 10, [](int l, int r) { return l < r; }, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
