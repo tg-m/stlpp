@@ -158,6 +158,7 @@ GEN_general_b_e_it_pred(const, r, function);CAR_RET
 GEN_b_e_it(function);CAR_RET;\
 GEN_b_e_it_pred(function);CAR_RET
 
+
 #define GEN_it_num_it(function)\
 template<typename IteratorLeft_t, typename Num_t, typename IteratorRight_t>CAR_RET;\
 inline auto function(IteratorLeft_t it_l, Num_t num, IteratorRight_t it_r) -> decltype(call_it_num_it(function, it_l, num, it_r)) {CAR_RET;\

@@ -55,7 +55,7 @@ bool int_less(int l, int r) {
 
 #define special_general_adjacent_find_it_it(direction, Const, input)\
 TEST_F(TemplateTest, special_general_##direction##_##Const##_adjacent_find_it_it) {\
-    std::vector<int> Const v = input;\
+    std::vector<typename decltype(input)::value_type> Const v = input;\
     auto expected = std::adjacent_find(stdpp::direction##begin(v), stdpp::direction##end(v));\
     auto actual = stdpp::direction##adjacent_find(v);\
 \
@@ -71,7 +71,7 @@ special_general_adjacent_find_it_it(r, const, std::vector<int>({1, 2, 3, 4, 5, 5
 
 #define special_general_adjacent_find_it_it_pred(direction, Const, input)\
 TEST_F(TemplateTest, special_general_##direction##_##Const##_adjacent_find_it_it_pred) {\
-    std::vector<int> Const v = input;\
+    std::vector<typename decltype(input)::value_type> Const v = input;\
     auto expected = std::adjacent_find(stdpp::direction##begin(v), stdpp::direction##end(v), int_eq);\
     auto actual = stdpp::direction##adjacent_find(v, int_eq);\
 \
@@ -87,7 +87,7 @@ special_general_adjacent_find_it_it_pred(r, const, std::vector<int>({1, 2, 3, 4,
 
 #define specific_test_function_0_params(tag, function, input, direction, Const)\
 TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##_0_params) {\
-    std::vector<int> Const v = input;\
+    std::vector<typename decltype(input)::value_type> Const v = input;\
     auto expected = std::function(stdpp::direction##begin(v), stdpp::direction##end(v));\
     auto actual = stdpp::direction##function(v);\
 \
@@ -99,9 +99,11 @@ specific_test_function_0_params(tag, function, input, , const);\
 specific_test_function_0_params(tag, function, input, r, );\
 specific_test_function_0_params(tag, function, input, r, const);
 
+
+
 #define specific_test_function_1_params(tag, function, paramOne, input, direction, Const)\
 TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##__1_params) {\
-    std::vector<int> Const v = input;\
+    std::vector<typename decltype(input)::value_type> Const v = input;\
     auto expected = std::function(stdpp::direction##begin(v), stdpp::direction##end(v), paramOne);\
     auto actual = stdpp::direction##function(v, paramOne);\
 \
@@ -113,9 +115,27 @@ specific_test_function_1_params(tag, function, paramOne, input, , const);\
 specific_test_function_1_params(tag, function, paramOne, input, r, );\
 specific_test_function_1_params(tag, function, paramOne, input, r, const);
 
+
+#define specific_test_function_1_params_test_mutable_input(tag, function, paramOne, input, direction)\
+TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##__1_params) {\
+    std::vector<typename decltype(input)::value_type> expected = input;\
+    std::vector<typename decltype(input)::value_type> actual = input;\
+    \
+    std::function(stdpp::direction##begin(actual), stdpp::direction##end(actual), paramOne);\
+    stdpp::direction##function(expected, paramOne);\
+\
+    ASSERT_EQ(expected, actual);\
+}
+#define generic_test_function_1_params_test_mutable_input(tag, function, paramOne, input)\
+specific_test_function_1_params_test_mutable_input(tag, function, paramOne, input,  );\
+specific_test_function_1_params_test_mutable_input(tag, function, paramOne, input, r)
+
+
+
+
 #define specific_test_function_2_params(tag, function, paramOne, paramTwo, input, direction, Const)\
 TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##__2_params) {\
-    std::vector<int> Const v = input;\
+    std::vector<typename decltype(input)::value_type> Const v = input;\
     auto expected = std::function(stdpp::direction##begin(v), stdpp::direction##end(v), paramOne, paramTwo);\
     auto actual = stdpp::direction##function(v, paramOne, paramTwo);\
 \
@@ -127,9 +147,24 @@ specific_test_function_2_params(tag, function, paramOne, paramTwo, input, , cons
 specific_test_function_2_params(tag, function, paramOne, paramTwo, input, r, );\
 specific_test_function_2_params(tag, function, paramOne, paramTwo, input, r, const);
 
+
+#define specific_test_function_2_params_test_mutable_input(tag, function, paramOne, paramTwo, input, direction)\
+TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##__1_params) {\
+    std::vector<typename decltype(input)::value_type> expected = input;\
+    std::vector<typename decltype(input)::value_type> actual = input;\
+    \
+    std::function(stdpp::direction##begin(actual), stdpp::direction##end(actual), paramOne, paramTwo);\
+    stdpp::direction##function(expected, paramOne, paramTwo);\
+\
+    ASSERT_EQ(expected, actual);\
+}
+#define generic_test_function_2_params_test_mutable_input(tag, function, paramOne, input)\
+specific_test_function_2_params_test_mutable_input(tag, function, paramOne, input, );\
+specific_test_function_2_params_test_mutable_input(tag, function, paramOne, input, r)
+
 #define specific_test_function_3_params(tag, function, paramOne, paramTwo, paramThree, input, direction, Const)\
 TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##__3_params) {\
-    std::vector<int> Const v = input;\
+    std::vector<typename decltype(input)::value_type> Const v = input;\
     auto expected = std::function(stdpp::direction##begin(v), stdpp::direction##end(v), paramOne, paramTwo, paramThree);\
     auto actual = stdpp::direction##function(v, paramOne, paramTwo, paramThree);\
 \
@@ -165,9 +200,9 @@ generic_test_function_1_params(2, any_of, less_than_zero_int, std::vector<int>({
 
 #define specific_test_function_0_params_for_copy(tag, function, input, direction, Const)\
 TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##_0_params_for_copy) {\
-    std::vector<int> Const v = input;\
-    std::vector<int> expected(v.size());\
-    std::vector<int> actual(v.size());\
+    std::vector<typename decltype(input)::value_type> Const v = input;\
+    std::vector<typename decltype(input)::value_type> expected(v.size());\
+    std::vector<typename decltype(input)::value_type> actual(v.size());\
     std::function(stdpp::direction##begin(v), stdpp::direction##end(v), expected.begin());\
     stdpp::direction##function(v, actual.begin());\
 \
@@ -178,16 +213,21 @@ specific_test_function_0_params_for_copy(tag, function, input, , );\
 specific_test_function_0_params_for_copy(tag, function, input, , const);\
 specific_test_function_0_params_for_copy(tag, function, input, r, );\
 specific_test_function_0_params_for_copy(tag, function, input, r, const);
-generic_test_function_0_params_for_copy(1, copy, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
-generic_test_function_0_params_for_copy(2, copy, std::vector<int>({}));
-generic_test_function_0_params_for_copy(3, copy, std::vector<int>());
-generic_test_function_0_params_for_copy(4, copy, std::vector<int>(10, 10));
+generic_test_function_0_params_for_copy(int_1, copy, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
+generic_test_function_0_params_for_copy(int_2, copy, std::vector<int>({}));
+generic_test_function_0_params_for_copy(int_3, copy, std::vector<int>());
+generic_test_function_0_params_for_copy(int_4, copy, std::vector<int>(10, 10));
+generic_test_function_0_params_for_copy(double_1, copy, std::vector<double>({1.0, 2.0, 3.0, 4.09, 5.023, 5.12, 3.87, 12.22, 7.34, 7.09}));
+generic_test_function_0_params_for_copy(double_2, copy, std::vector<double>({}));
+generic_test_function_0_params_for_copy(double_3, copy, std::vector<double>());
+generic_test_function_0_params_for_copy(double_4, copy, std::vector<double>(10, 10.1));
+
 
 #define specific_test_function_0_params_for_copy_backward(tag, function, input, direction, Const)\
 TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##_0_params_for_copy_backward) {\
-    std::vector<int> Const v = input;\
-    std::vector<int> expected(v.size());\
-    std::vector<int> actual(v.size());\
+    std::vector<typename decltype(input)::value_type> Const v = input;\
+    std::vector<typename decltype(input)::value_type> expected(v.size());\
+    std::vector<typename decltype(input)::value_type> actual(v.size());\
     std::function(stdpp::direction##begin(v), stdpp::direction##end(v), expected.end());\
     stdpp::direction##function(v, actual.end());\
 \
@@ -198,16 +238,20 @@ specific_test_function_0_params_for_copy_backward(tag, function, input, , );\
 specific_test_function_0_params_for_copy_backward(tag, function, input, , const);\
 specific_test_function_0_params_for_copy_backward(tag, function, input, r, );\
 specific_test_function_0_params_for_copy_backward(tag, function, input, r, const);
-generic_test_function_0_params_for_copy_backward(1, copy_backward, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
-generic_test_function_0_params_for_copy_backward(2, copy_backward, std::vector<int>({}));
-generic_test_function_0_params_for_copy_backward(3, copy_backward, std::vector<int>());
-generic_test_function_0_params_for_copy_backward(4, copy_backward, std::vector<int>(10, 9));
+generic_test_function_0_params_for_copy_backward(int_1, copy_backward, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
+generic_test_function_0_params_for_copy_backward(int_2, copy_backward, std::vector<int>({}));
+generic_test_function_0_params_for_copy_backward(int_3, copy_backward, std::vector<int>());
+generic_test_function_0_params_for_copy_backward(int_4, copy_backward, std::vector<int>(10, 9));
+generic_test_function_0_params_for_copy_backward(double_1, copy_backward, std::vector<double>({1.0, 2.0, 3.0, 4.09, 5.023, 5.12, 3.87, 12.22, 7.34, 7.09}));
+generic_test_function_0_params_for_copy_backward(double_2, copy_backward, std::vector<double>({}));
+generic_test_function_0_params_for_copy_backward(double_3, copy_backward, std::vector<double>());
+generic_test_function_0_params_for_copy_backward(double_4, copy_backward, std::vector<double>(10, 10.1));
 
 #define specific_test_function_0_params_for_copy_if(tag, function, pred, input, direction, Const)\
 TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##_0_params_for_copy_if) {\
-    std::vector<int> Const v = input;\
-    std::vector<int> expected(v.size());\
-    std::vector<int> actual(v.size());\
+    std::vector<typename decltype(input)::value_type> Const v = input;\
+    std::vector<typename decltype(input)::value_type> expected(v.size());\
+    std::vector<typename decltype(input)::value_type> actual(v.size());\
     std::function(stdpp::direction##begin(v), stdpp::direction##end(v), expected.begin(), pred);\
     stdpp::direction##function(v, actual.begin(), pred);\
 \
@@ -226,9 +270,9 @@ generic_test_function_0_params_for_copy_if(5, copy_if, [](int i) { return 0 == i
 
 #define specific_test_function_0_params_for_copy_n(tag, function, num, input, direction, Const)\
 TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##_0_params_for_copy_n) {\
-    std::vector<int> Const v = input;\
-    std::vector<int> expected;\
-    std::vector<int> actual;\
+    std::vector<typename decltype(input)::value_type> Const v = input;\
+    std::vector<typename decltype(input)::value_type> expected;\
+    std::vector<typename decltype(input)::value_type> actual;\
     expected.resize(v.size());\
     actual.resize(v.size());\
     std::function(stdpp::begin(v), num, expected.begin());\
@@ -239,7 +283,8 @@ TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##_0_params_for
 #define generic_test_function_0_params_for_copy_n(tag, function, num, input)\
 specific_test_function_0_params_for_copy_n(tag, function, num, input, , );\
 specific_test_function_0_params_for_copy_n(tag, function, num, input, , const);
-generic_test_function_0_params_for_copy_n(1, copy_n, 5, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
+generic_test_function_0_params_for_copy_n(int_1, copy_n, 5, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, 7}));
+generic_test_function_0_params_for_copy_n(double_1, copy_n, 5, std::vector<double>({1.0, 2.0, 3.0, 4.09, 5.023, 5.12, 3.87, 12.22, 7.34, 7.09}));
 
 generic_test_function_1_params(1, count, 7, std::vector<int>({1, 2, 3, 4, 5, 5, 3, 2, 7, -1}));
 generic_test_function_1_params(2, count, 7, std::vector<int>({}));
@@ -295,3 +340,29 @@ generic_test_function_2_params(1, equal_range, 1, [](int l, int r) { return l < 
 generic_test_function_2_params(2, equal_range, 2, [](int l, int r) { return l < r; }, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
 generic_test_function_2_params(9, equal_range, 9, [](int l, int r) { return l < r; }, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
 generic_test_function_2_params(10, equal_range, 10, [](int l, int r) { return l < r; }, std::vector<int>({1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 9}));
+
+
+generic_test_function_1_params_test_mutable_input(int32_t_0, fill, 0, std::vector<int32_t>({1, 2, 3, 4, 5, 6, 7}));
+generic_test_function_1_params_test_mutable_input(int32_t_1, fill, 333, std::vector<int32_t>({1, 2, 3, 4, 5, 6, 7}));
+generic_test_function_1_params_test_mutable_input(int32_t_2, fill, 0, std::vector<int32_t>({}));
+generic_test_function_1_params_test_mutable_input(double_0, fill, 9.53, std::vector<double>({1, 2, 3, 4, 5, 6, 7}));
+generic_test_function_1_params_test_mutable_input(double_1, fill, 9.53, std::vector<double>({}));
+
+
+
+#define specific_test_function_0_params_for_fill_n(tag, function, paramOne, paramTwo, input, direction, Const)\
+TEST_F(TemplateTest, function##_TAG_##tag##_##direction##_##Const##__0_params_for_fill_n) {\
+    std::vector<typename decltype(input)::value_type> expected = input;\
+    std::vector<typename decltype(input)::value_type> actual = input;\
+    \
+    std::function(stdpp::direction##begin(expected), paramOne, paramTwo);\
+    stdpp::direction##function(stdpp::direction##begin(actual), paramOne, paramTwo);\
+\
+    ASSERT_EQ(expected, actual);\
+}
+#define generic_test_function_0_params_for_fill_n(tag, function, paramOne, paramTwo, input)\
+specific_test_function_0_params_for_fill_n(tag, function, paramOne, paramTwo, input, ,)
+
+generic_test_function_0_params_for_fill_n(int_0, fill_n, 0, 0, std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9}));
+generic_test_function_0_params_for_fill_n(int_1, fill_n, 1, 1, std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9}));
+generic_test_function_0_params_for_fill_n(int_2, fill_n, 3, 4, std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9}));
